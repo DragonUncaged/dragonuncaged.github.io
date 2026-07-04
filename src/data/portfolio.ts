@@ -12,7 +12,7 @@ export const profile = {
   codechef: "https://www.codechef.com/users/dragonuncaged",
   about: [
     "Hi! I'm Ankit, a full stack developer who enjoys turning ideas into fast, polished web applications. I work across the stack — from designing REST APIs and data models to crafting pixel-perfect, accessible UIs.",
-    "Currently I'm a Full Stack Developer at Internshala, where I design and ship web applications with a focus on performance and user experience. Before that I completed my B.Tech in Computer Science at Chandigarh University.",
+    "Currently I'm a Full Stack Developer at Even Healthcare, building scalable applications with Next.js and Go. Before that I completed my B.Tech in Computer Science at Chandigarh University.",
     "When I'm not shipping features, you'll find me solving problems on CodeChef or experimenting with new tools (like this portfolio — a working editor + terminal that compiles C, Python and JavaScript right in your browser).",
   ],
 };
@@ -30,6 +30,7 @@ export const skills = [
   { name: "MongoDB", logo: require("../assets/logos/MongoDBLogo.png") },
   { name: "Firebase", logo: require("../assets/logos/FirebaseLogo.png") },
   { name: "Docker", logo: require("../assets/logos/DockerLogo.png") },
+  { name: "Go", logo: require("../assets/logos/GoLogo.png") },
 ];
 
 export interface Project {
@@ -86,14 +87,36 @@ export const resume = {
   ],
   experience: [
     {
-      company: "Internshala",
+      company: "Even Healthcare",
       role: "Full Stack Developer",
-      period: "Apr 2024 — Present",
+      period: "Feb 2025 — Present",
       location: "Gurugram, Haryana",
       highlights: [
-        "Building and shipping full-stack web applications end to end.",
-        "Designing web applications ensuring optimal performance and user experience.",
-        "Working with React, Node.js and REST APIs in production.",
+        "Building scalable full-stack applications with Next.js and Go.",
+        "Designing backend services and REST APIs.",
+        "Collaborating with cross-functional teams in a fast-paced startup environment.",
+      ],
+    },
+    {
+      company: "Startup",
+      role: "Full Stack Developer",
+      period: "Nov 2024 — Jan 2025",
+      location: "Remote",
+      highlights: [
+        "Developed backend services using Python and FastAPI.",
+        "Built responsive frontend interfaces with React.",
+        "Implemented RESTful APIs and database designs.",
+      ],
+    },
+    {
+      company: "Internshala",
+      role: "Full Stack Developer",
+      period: "Apr 2024 — Oct 2024",
+      location: "Gurugram, Haryana",
+      highlights: [
+        "Built and shipped full-stack web applications end to end.",
+        "Designed web applications ensuring optimal performance and user experience.",
+        "Worked with React, Node.js and REST APIs in production.",
       ],
     },
   ],
