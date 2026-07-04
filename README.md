@@ -1,4 +1,4 @@
-# dragonuncaged portfolio — a VS Code that ships itself
+# dragonuncaged portfolio
 
 [![Live Site](https://img.shields.io/badge/Live%20Site-dragonuncaged.github.io-blue?logo=github&logoColor=white)](https://dragonuncaged.github.io)
 [![GitHub Repo](https://img.shields.io/badge/GitHub-dragonuncaged--portfolio-blue?logo=github&logoColor=white)](https://github.com/DragonUncaged/dragonuncaged.github.io)
