@@ -57,10 +57,16 @@ const CodeEditor: React.FC<{ file: VFile }> = ({ file }) => {
       }
       options={{
         readOnly: !!file.readOnly,
-        fontSize: 14,
+        fontSize: window.innerWidth < 640 ? 13 : 14,
         fontFamily: '"JetBrains Mono", ui-monospace, Menlo, monospace',
         fontLigatures: true,
         minimap: { enabled: window.innerWidth >= 1280 },
+        // gutter + folding + glyph margin eat ~70px on a 360px phone
+        lineNumbersMinChars: window.innerWidth < 640 ? 2 : 5,
+        folding: window.innerWidth >= 640,
+        glyphMargin: false,
+        lineDecorationsWidth: window.innerWidth < 640 ? 4 : 10,
+        wordWrap: window.innerWidth < 640 ? "on" : "off",
         scrollBeyondLastLine: false,
         smoothScrolling: true,
         cursorBlinking: "smooth",

@@ -14,7 +14,7 @@ import { runCode } from "./runners";
 const FILES_KEY = "vfs.files.v2";
 const TABS_KEY = "vfs.tabs.v2";
 
-export type TermKind = "out" | "err" | "sys" | "cmd" | "ok" | "accent";
+export type TermKind = "out" | "err" | "sys" | "cmd" | "ok" | "accent" | "art";
 
 export interface TermLine {
   id: number;
@@ -154,7 +154,8 @@ export const IDEProvider: React.FC<{ children: React.ReactNode }> = ({
     return isNaN(saved) ? 260 : Math.min(Math.max(saved, 180), 480);
   });
   const [terminalOpen, setTerminalOpen] = useState<boolean>(
-    () => window.innerWidth >= 768
+    // a phone in landscape is ≥768 wide but only ~360 tall — width alone lied
+    () => window.innerWidth >= 768 && window.innerHeight >= 500
   );
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 

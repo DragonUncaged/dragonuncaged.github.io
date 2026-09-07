@@ -66,17 +66,22 @@ const EditorPane: React.FC = () => {
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-ide-editor">
-      {/* breadcrumbs */}
-      <div className="flex h-6 shrink-0 items-center gap-0.5 border-b border-ide-border/60 px-3 font-mono text-[11px] text-ide-faint select-none">
-        <span>{profile.handle}-portfolio</span>
-        <ChevronRight className="h-3 w-3" />
-        <span>{dirName(file.path)}</span>
-        <ChevronRight className="h-3 w-3" />
-        <FileIcon path={file.path} className="!w-4" />
-        <span className="text-ide-muted">{fileName(file.path)}</span>
+      {/* breadcrumbs — single non-wrapping row; the trail scrolls, the badge pins */}
+      <div className="flex h-6 shrink-0 items-center gap-1 overflow-hidden border-b border-ide-border/60 pl-3 font-mono text-[11px] text-ide-faint select-none">
+        <div className="no-scrollbar flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto whitespace-nowrap">
+          {/* repo name is the least useful crumb — first to go on phones */}
+          <span className="hidden shrink-0 sm:inline">
+            {profile.handle}-portfolio
+          </span>
+          <ChevronRight className="hidden h-3 w-3 shrink-0 sm:block" />
+          <span className="shrink-0">{dirName(file.path)}</span>
+          <ChevronRight className="h-3 w-3 shrink-0" />
+          <FileIcon path={file.path} className="!w-4 shrink-0" />
+          <span className="shrink-0 text-ide-muted">{fileName(file.path)}</span>
+        </div>
         {file.readOnly && (
-          <span className="ml-2 rounded-sm border border-ide-border px-1 text-[10px]">
-            read-only · rendered view
+          <span className="mr-3 shrink-0 whitespace-nowrap rounded-sm border border-ide-border px-1 text-[10px] leading-4">
+            read-only<span className="hidden sm:inline"> · rendered view</span>
           </span>
         )}
       </div>

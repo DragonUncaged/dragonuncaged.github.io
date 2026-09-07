@@ -29,6 +29,8 @@ const kindClass: Record<string, string> = {
   ok: "text-[#89d185]",
   accent: "text-ide-accent",
   cmd: "text-ide-text",
+  // ASCII art: must never wrap, and shrinks on phones instead of scrolling
+  art: "text-ide-accent",
 };
 
 // VS Code terminal ANSI palette for the prompt
@@ -83,7 +85,10 @@ const Linkified: React.FC<{ text: string }> = ({ text }) => {
 };
 
 const MIN_H = 120;
-const MAX_H = () => Math.max(200, window.innerHeight - 220);
+/* leave room for title bar + tabs + breadcrumbs + status bar, and never let the
+   panel take more than ~55% of a short screen (phone landscape) */
+const MAX_H = () =>
+  Math.max(MIN_H, Math.min(window.innerHeight * 0.55, window.innerHeight - 300));
 
 const Terminal: React.FC = () => {
   const ide = useIDE();
@@ -99,7 +104,8 @@ const Terminal: React.FC = () => {
   const histIdx = useRef(-1);
   const [height, setHeight] = useState<number>(() => {
     const saved = parseInt(localStorage.getItem("termHeight") || "230", 10);
-    return isNaN(saved) ? 230 : saved;
+    const want = isNaN(saved) ? 230 : saved;
+    return Math.min(Math.max(want, MIN_H), MAX_H());
   });
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -112,11 +118,22 @@ const Terminal: React.FC = () => {
     localStorage.setItem("termHeight", String(height));
   }, [height]);
 
+  useEffect(() => {
+    const onResize = () =>
+      setHeight((h) => Math.min(Math.max(h, MIN_H), MAX_H()));
+    window.addEventListener("resize", onResize);
+    window.addEventListener("orientationchange", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("orientationchange", onResize);
+    };
+  }, []);
+
   // boot banner (once)
   useEffect(() => {
     if (!booted.current && termLines.length === 0) {
       booted.current = true;
-      writeTerm("accent", BANNER);
+      writeTerm("art", BANNER);
       writeTerm("sys", "");
       writeTerm("sys", `Welcome to ${profile.name}'s portfolio - interactive shell`);
       writeTerm("sys", "Type `help` to see what this terminal can do - yes, it can compile C.");
@@ -300,7 +317,7 @@ const Terminal: React.FC = () => {
             ["shipped", `${projects.length} live projects`],
             ["theme", "Dark+ (classic charcoal & blue)"],
           ];
-          writeTerm("accent", BANNER);
+          writeTerm("art", BANNER);
           info.forEach(([k, v]) =>
             writeTerm("out", `  ${k.padEnd(10)} ${v}`)
           );
@@ -426,20 +443,30 @@ const Terminal: React.FC = () => {
     }
   };
 
-  const startResize = (down: React.MouseEvent) => {
-    down.preventDefault();
-    const startY = down.clientY;
+  const startResize = (down: React.MouseEvent | React.TouchEvent) => {
+    const startY =
+      "touches" in down ? down.touches[0].clientY : down.clientY;
     const startH = height;
-    const onMove = (e: MouseEvent) => {
-      const h = startH + (startY - e.clientY);
-      setHeight(Math.min(Math.max(h, MIN_H), MAX_H()));
+    const move = (clientY: number) =>
+      setHeight(
+        Math.min(Math.max(startH + (startY - clientY), MIN_H), MAX_H())
+      );
+
+    const onMouseMove = (e: MouseEvent) => move(e.clientY);
+    const onTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      move(e.touches[0].clientY);
     };
     const onUp = () => {
-      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("mouseup", onUp);
+      window.removeEventListener("touchend", onUp);
     };
-    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("mouseup", onUp);
+    window.addEventListener("touchend", onUp);
   };
 
   const renderLine = (l: TermLine) => {
@@ -452,7 +479,14 @@ const Terminal: React.FC = () => {
       );
     }
     return (
-      <div key={l.id} className={`whitespace-pre-wrap break-all ${kindClass[l.kind]}`}>
+      <div
+        key={l.id}
+        className={`${
+          l.kind === "art"
+            ? "whitespace-pre text-[10px] leading-[1.15] sm:text-[13px] sm:leading-[1.5]"
+            : "whitespace-pre-wrap break-all"
+        } ${kindClass[l.kind]}`}
+      >
         {l.text ? <Linkified text={l.text} /> : " "}
       </div>
     );
@@ -465,17 +499,18 @@ const Terminal: React.FC = () => {
     >
       {/* resize handle */}
       <div
-        className="absolute -top-0.5 left-0 z-10 h-1.5 w-full cursor-row-resize hover:bg-ide-accent/50"
+        className="absolute -top-1 left-0 z-10 h-3 w-full cursor-row-resize touch-none hover:bg-ide-accent/50 sm:-top-0.5 sm:h-1.5"
         onMouseDown={startResize}
+        onTouchStart={startResize}
       />
 
       {/* panel header */}
-      <div className="flex h-8 shrink-0 items-center gap-4 border-b border-ide-border/60 px-4 text-[11px] uppercase tracking-wider text-ide-faint select-none">
+      <div className="no-scrollbar flex h-9 shrink-0 items-center gap-3 overflow-x-auto border-b border-ide-border/60 px-2 text-[11px] uppercase tracking-wider text-ide-faint select-none sm:h-8 sm:gap-4 sm:px-4">
         {(["problems", "output", "terminal"] as PanelTab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`border-b pb-1 pt-1.5 transition-colors ${
+            className={`shrink-0 whitespace-nowrap border-b pb-1 pt-1.5 transition-colors ${
               tab === t
                 ? "border-ide-accent text-ide-text"
                 : "border-transparent hover:text-ide-muted"
@@ -487,7 +522,7 @@ const Terminal: React.FC = () => {
             )}
           </button>
         ))}
-        <div className="ml-auto flex items-center gap-1">
+        <div className="ml-auto flex shrink-0 items-center gap-1 pl-2">
           <button
             title="Clear terminal"
             className="rounded p-1 hover:bg-ide-hover hover:text-ide-text"
@@ -516,7 +551,7 @@ const Terminal: React.FC = () => {
       {tab === "terminal" ? (
         <div
           ref={scrollRef}
-          className="min-h-0 flex-1 cursor-text overflow-y-auto px-4 py-2 font-mono text-[13px] leading-[1.5]"
+          className="terminal-body min-h-0 flex-1 cursor-text overflow-y-auto px-3 py-2 font-mono text-xs leading-[1.55] sm:px-4 sm:text-[13px]"
           onClick={() => inputRef.current?.focus()}
         >
           {termLines.map(renderLine)}
@@ -527,16 +562,18 @@ const Terminal: React.FC = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKeyDown}
-              className="min-w-0 flex-1 bg-transparent font-mono text-[13px] text-ide-text caret-ide-accent outline-none"
+              className="min-w-0 flex-1 bg-transparent font-mono text-xs text-ide-text caret-ide-accent outline-none sm:text-[13px]"
               spellCheck={false}
               autoComplete="off"
               autoCapitalize="off"
+              autoCorrect="off"
+              enterKeyHint="go"
               aria-label="Terminal input"
             />
           </div>
         </div>
       ) : tab === "problems" ? (
-        <div className="flex-1 overflow-y-auto px-4 py-3 font-mono text-[13px] text-ide-faint">
+        <div className="flex-1 overflow-y-auto px-3 py-3 font-mono text-xs text-ide-faint sm:px-4 sm:text-[13px]">
           <p className="text-syn-string">No problems have been detected in this developer.</p>
           <p className="mt-2">
             (Known warnings: will refactor perfectly working code at 2am; strong
@@ -544,7 +581,7 @@ const Terminal: React.FC = () => {
           </p>
         </div>
       ) : (
-        <div className="flex-1 overflow-y-auto px-4 py-3 font-mono text-[13px] text-ide-faint">
+        <div className="flex-1 overflow-y-auto px-3 py-3 font-mono text-xs text-ide-faint sm:px-4 sm:text-[13px]">
           <p>[portfolio] channel initialised.</p>
           <p>[portfolio] nothing to show here - run a file and watch the TERMINAL tab.</p>
         </div>

@@ -15,15 +15,15 @@ const links = [
 /** Styled like the shell script it pretends to be. */
 const ContactPage: React.FC = () => (
   <div className="h-full overflow-y-auto">
-    <div className="mx-auto max-w-3xl px-6 py-12 sm:px-10 lg:py-16">
-      <h1 className="animate-fade-up border-b border-ide-border pb-4 text-4xl font-bold text-ide-text">
-        <span className="mr-3 font-mono text-2xl font-normal text-ide-accent">
+    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-10 sm:py-12 lg:py-16">
+      <h1 className="animate-fade-up border-b border-ide-border pb-4 text-3xl font-bold text-ide-text sm:text-4xl">
+        <span className="mr-2 font-mono text-xl font-normal text-ide-accent sm:mr-3 sm:text-2xl">
           $_
         </span>
         Contact
       </h1>
 
-      <div className="animate-fade-up stagger-1 mt-8 border border-ide-border bg-ide-sidebar/60 p-5 font-mono text-sm leading-7 sm:p-6">
+      <div className="animate-fade-up stagger-1 mt-8 break-words border border-ide-border bg-ide-sidebar/60 p-4 font-mono text-xs leading-6 sm:p-6 sm:text-sm sm:leading-7">
         <p className="text-syn-comment">#!/bin/bash</p>
         <p className="text-syn-comment">
           # I'm currently open to new opportunities —
@@ -42,13 +42,13 @@ const ContactPage: React.FC = () => (
           <span className="text-syn-keyword">then</span>
         </p>
         {links.map((l) => (
-          <p key={l.cmd} className="pl-6">
-            <span className="text-syn-func">{l.cmd.padEnd(9, " ")}</span>
+          <p key={l.cmd} className="pl-4 sm:pl-6">
+            <span className="inline-block w-[9ch] text-syn-func">{l.cmd}</span>
             <a
               href={l.href}
               target="_blank"
               rel="noreferrer"
-              className="text-syn-string underline-offset-4 hover:text-ide-accent hover:underline"
+              className="block break-all pl-4 text-syn-string underline-offset-4 hover:text-ide-accent hover:underline sm:inline sm:pl-0"
             >
               "{l.label}"
             </a>
@@ -60,17 +60,17 @@ const ContactPage: React.FC = () => (
         </p>
       </div>
 
-      <div className="animate-fade-up stagger-3 mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+      <div className="animate-fade-up stagger-3 mt-10 flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">
         <a
           href={`mailto:${profile.email}?subject=Hello Ankit!`}
-          className="group relative border border-ide-accent bg-ide-accent/10 px-8 py-3.5 font-mono text-ide-accent transition-colors hover:bg-ide-accent hover:text-white"
+          className="group relative border border-ide-accent bg-ide-accent/10 px-8 py-3.5 text-center font-mono text-ide-accent transition-colors hover:bg-ide-accent hover:text-white sm:text-left"
         >
           ./say-hello.sh
           <span className="ml-2 inline-block transition-transform group-hover:translate-x-1">
             →
           </span>
         </a>
-        <p className="text-sm text-ide-faint">
+        <p className="break-all text-sm text-ide-faint">
           …or just email{" "}
           <span className="font-mono text-ide-muted">{profile.email}</span>
         </p>

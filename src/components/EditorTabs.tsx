@@ -21,7 +21,7 @@ const EditorTabs: React.FC = () => {
 
   return (
     <div className="flex h-9 shrink-0 items-stretch border-b border-ide-border bg-ide-tabbar select-none">
-      <div className="flex min-w-0 flex-1 items-stretch overflow-x-auto">
+      <div className="no-scrollbar flex min-w-0 flex-1 items-stretch overflow-x-auto">
         {openTabs.map((path) => {
           const active = path === activeTab;
           return (
@@ -35,9 +35,11 @@ const EditorTabs: React.FC = () => {
               }`}
             >
               <FileIcon path={path} />
-              <span className="font-mono text-xs">{fileName(path)}</span>
+              <span className="max-w-[9rem] truncate font-mono text-xs sm:max-w-none">
+                {fileName(path)}
+              </span>
               <button
-                className={`ml-1 rounded p-0.5 hover:bg-ide-active ${
+                className={`touch-always-visible ml-1 rounded p-0.5 hover:bg-ide-active ${
                   active ? "opacity-70" : "opacity-0 group-hover:opacity-70"
                 }`}
                 onClick={(e) => {
@@ -58,14 +60,15 @@ const EditorTabs: React.FC = () => {
           onClick={() => activeTab && runFile(activeTab)}
           disabled={!!running}
           title="Run current file (⌘/Ctrl+Enter)"
-          className="flex shrink-0 items-center gap-1.5 px-3 font-mono text-xs text-[#89d185] transition-colors hover:bg-ide-hover disabled:opacity-50"
+          aria-label="Run current file"
+          className="flex shrink-0 items-center gap-1.5 border-l border-ide-border px-3 font-mono text-xs text-[#89d185] transition-colors hover:bg-ide-hover disabled:opacity-50"
         >
           {running === activeTab ? (
             <SpinnerIcon className="h-4 w-4" />
           ) : (
             <RunIcon className="h-4 w-4" />
           )}
-          Run
+          <span className="hidden sm:inline">Run</span>
         </button>
       )}
     </div>

@@ -607,14 +607,14 @@ const SideBar: React.FC = () => {
 
   return (
     <div
-      className="relative flex h-full shrink-0 border-r border-ide-border bg-ide-sidebar select-none"
+      className="relative flex h-full shrink-0 border-r border-ide-border bg-ide-sidebar select-none max-lg:!w-[min(17rem,calc(100vw-6rem))]"
       style={{ width: sidebarWidth }}
     >
       <div className="min-w-0 flex-1">
         <Panel />
       </div>
       <div
-        className="absolute right-0 top-0 z-10 h-full w-1 cursor-col-resize hover:bg-ide-accent/60"
+        className="absolute right-0 top-0 z-10 hidden h-full w-1 cursor-col-resize hover:bg-ide-accent/60 lg:block"
         onMouseDown={startResizing}
       />
     </div>

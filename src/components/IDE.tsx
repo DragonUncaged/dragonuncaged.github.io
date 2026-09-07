@@ -68,14 +68,15 @@ const IDE: React.FC = () => {
         {/* sidebar (mobile/tablet overlay) */}
         {mobileMenuOpen && (
           <div className="absolute inset-0 z-40 flex lg:hidden">
-            <div className="flex h-full">
+            <div className="flex h-full min-w-0">
               <div className="h-full sm:hidden">
                 <ActivityBar />
               </div>
               <SideBar />
             </div>
-            <div
-              className="h-full flex-1 bg-black/50"
+            <button
+              aria-label="Close explorer"
+              className="h-full min-w-[3rem] flex-1 bg-black/50"
               onClick={() => setMobileMenuOpen(false)}
             />
           </div>

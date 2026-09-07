@@ -87,10 +87,10 @@ const ResumePage: React.FC = () => {
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="mx-auto max-w-4xl px-4 py-12 sm:px-10 lg:py-16">
+      <div className="mx-auto max-w-4xl px-4 py-8 sm:px-10 sm:py-12 lg:py-16">
         <div className="animate-fade-up flex items-end justify-between border-b border-ide-border pb-4">
-          <h1 className="text-4xl font-bold text-ide-text">
-            <span className="mr-3 font-mono text-2xl font-normal text-ide-accent">
+          <h1 className="text-3xl font-bold text-ide-text sm:text-4xl">
+            <span className="mr-2 font-mono text-xl font-normal text-ide-accent sm:mr-3 sm:text-2xl">
               {"{}"}
             </span>
             Resume
@@ -100,24 +100,26 @@ const ResumePage: React.FC = () => {
           </span>
         </div>
 
-        <div className="animate-fade-up stagger-2 mt-8 overflow-x-auto border border-ide-border bg-ide-sidebar/50 py-4 font-mono text-[13px] leading-6">
+        <div className="animate-fade-up stagger-2 mt-8 overflow-x-auto border border-ide-border bg-ide-sidebar/50 py-4 font-mono text-[11px] leading-6 sm:text-[13px]">
           {rows.map((row, i) => (
             <div
               key={i}
               className="flex whitespace-pre px-0 hover:bg-ide-hover/60"
             >
-              <span className="w-12 shrink-0 select-none pr-4 text-right text-ide-faint/60">
+              <span className="w-8 shrink-0 select-none pr-3 text-right text-ide-faint/60 sm:w-12 sm:pr-4">
                 {i + 1}
               </span>
-              <span style={{ paddingLeft: row.indent * 20 }}>{row.node}</span>
+              <span className="pr-4" style={{ paddingLeft: row.indent * 12 }}>
+                {row.node}
+              </span>
             </div>
           ))}
         </div>
 
-        <div className="animate-fade-up stagger-3 mt-8 flex flex-wrap gap-3">
+        <div className="animate-fade-up stagger-3 mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <a
             href={`mailto:${profile.email}?subject=Opportunity for Ankit`}
-            className="border border-ide-accent bg-ide-accent/10 px-5 py-2.5 font-mono text-sm text-ide-accent transition-colors hover:bg-ide-accent hover:text-white"
+            className="border border-ide-accent bg-ide-accent/10 px-5 py-3 text-center font-mono text-sm text-ide-accent transition-colors hover:bg-ide-accent hover:text-white sm:py-2.5"
           >
             $ mail --to ankit
           </a>
@@ -125,7 +127,7 @@ const ResumePage: React.FC = () => {
             href={profile.linkedin}
             target="_blank"
             rel="noreferrer"
-            className="border border-ide-border px-5 py-2.5 font-mono text-sm text-ide-muted transition-colors hover:border-ide-accentDim hover:text-ide-text"
+            className="border border-ide-border px-5 py-3 text-center font-mono text-sm text-ide-muted transition-colors hover:border-ide-accentDim hover:text-ide-text sm:py-2.5"
           >
             $ open linkedin ↗
           </a>

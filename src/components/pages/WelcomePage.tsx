@@ -53,21 +53,22 @@ const WelcomePage: React.FC = () => {
 
   return (
     <div className="welcome-grid h-full overflow-y-auto">
-      <div className="mx-auto grid max-w-6xl gap-12 px-6 py-12 sm:px-10 lg:grid-cols-[1.4fr,1fr] lg:py-20">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-8 sm:gap-12 sm:px-10 sm:py-12 lg:grid-cols-[1.4fr,1fr] lg:py-20">
         {/* left column — hero + start + recent */}
-        <div>
+        <div className="min-w-0">
           <p className="animate-fade-up font-mono text-sm text-ide-accent">
             {"// Hi, my name is"}
           </p>
-          <h1 className="animate-fade-up stagger-1 mt-3 text-5xl font-bold tracking-tight text-ide-text sm:text-6xl">
+          <h1 className="animate-fade-up stagger-1 mt-2 text-4xl font-bold tracking-tight text-ide-text sm:mt-3 sm:text-5xl lg:text-6xl">
             Ankit Rao
             <span className="text-ide-accent">.</span>
           </h1>
-          <p className="stagger-2 mt-3 font-mono text-lg text-ide-muted sm:text-xl">
-            <span className="text-syn-punct">$</span>{" "}
-            <span className="typing">whoami → {profile.role}</span>
+          <p className="stagger-2 mt-3 overflow-hidden font-mono text-sm text-ide-muted sm:text-lg lg:text-xl">
+            <span className="typing">
+              <span className="text-syn-punct">$</span> whoami → {profile.role}
+            </span>
           </p>
-          <p className="animate-fade-up stagger-3 mt-6 max-w-xl leading-relaxed text-ide-muted">
+          <p className="animate-fade-up stagger-3 mt-5 max-w-xl text-sm leading-relaxed text-ide-muted sm:mt-6 sm:text-base">
             {profile.tagline} This portfolio is itself a small IDE — browse the
             files on the left, or create a{" "}
             <span className="font-mono text-syn-func">.c</span>,{" "}
@@ -85,14 +86,16 @@ const WelcomePage: React.FC = () => {
                 <button
                   key={a.label}
                   onClick={a.onClick}
-                  className="group flex w-full items-center gap-3 border border-ide-border bg-ide-sidebar/70 px-4 py-3 text-left transition-all hover:-translate-y-px hover:border-ide-accentDim"
+                  className="group flex w-full items-center gap-3 border border-ide-border bg-ide-sidebar/70 px-3 py-3 text-left transition-all hover:-translate-y-px hover:border-ide-accentDim sm:px-4"
                 >
-                  <span className="text-ide-accent">{a.icon}</span>
-                  <span className="font-mono text-sm text-ide-text">{a.label}</span>
-                  <span className="ml-auto hidden text-xs text-ide-faint sm:block">
+                  <span className="shrink-0 text-ide-accent">{a.icon}</span>
+                  <span className="min-w-0 truncate font-mono text-[13px] text-ide-text sm:text-sm">
+                    {a.label}
+                  </span>
+                  <span className="ml-auto hidden shrink-0 text-xs text-ide-faint lg:block">
                     {a.hint}
                   </span>
-                  <ChevronRight className="h-4 w-4 text-ide-faint transition-transform group-hover:translate-x-0.5 group-hover:text-ide-accent" />
+                  <ChevronRight className="ml-auto h-4 w-4 shrink-0 text-ide-faint transition-transform group-hover:translate-x-0.5 group-hover:text-ide-accent lg:ml-0" />
                 </button>
               ))}
             </div>
@@ -109,16 +112,16 @@ const WelcomePage: React.FC = () => {
                   href={p.live}
                   target="_blank"
                   rel="noreferrer"
-                  className="group flex items-center gap-2 px-1 py-1 text-ide-muted hover:text-ide-accent"
+                  className="group flex items-center gap-2 px-1 py-1.5 text-ide-muted hover:text-ide-accent"
                 >
-                  <FileIcon
-                    path={`x.${p.language}`}
-                  />
-                  {p.name.toLowerCase().replace(/\s+/g, "-")}
-                  <span className="text-ide-faint group-hover:text-ide-faint">
+                  <FileIcon path={`x.${p.language}`} />
+                  <span className="min-w-0 truncate">
+                    {p.name.toLowerCase().replace(/\s+/g, "-")}
+                  </span>
+                  <span className="hidden shrink-0 text-ide-faint group-hover:text-ide-faint sm:inline">
                     ~/projects
                   </span>
-                  <ExternalIcon className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
+                  <ExternalIcon className="touch-always-visible h-3.5 w-3.5 shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
                 </a>
               ))}
             </div>
@@ -126,7 +129,7 @@ const WelcomePage: React.FC = () => {
         </div>
 
         {/* right column — walkthroughs */}
-        <div className="animate-fade-up stagger-3">
+        <div className="animate-fade-up stagger-3 min-w-0">
           <h2 className="mb-3 text-xs font-semibold uppercase tracking-widest text-ide-faint">
             Walkthroughs
           </h2>
@@ -139,7 +142,7 @@ const WelcomePage: React.FC = () => {
               >
                 <div className="flex items-center gap-1.5">
                   <FileIcon path={w.file} />
-                  <span className="font-mono text-xs text-ide-faint group-hover:text-ide-accent">
+                  <span className="min-w-0 truncate font-mono text-xs text-ide-faint group-hover:text-ide-accent">
                     {w.file}
                   </span>
                 </div>
@@ -149,7 +152,7 @@ const WelcomePage: React.FC = () => {
             ))}
           </div>
 
-          <div className="mt-6 border border-dashed border-ide-border p-4 font-mono text-xs leading-relaxed text-ide-faint">
+          <div className="mt-6 hidden border border-dashed border-ide-border p-4 font-mono text-xs leading-relaxed text-ide-faint lg:block">
             <p className="text-syn-comment">{"/*"}</p>
             <p className="text-syn-comment">
               &nbsp;* Pro tip: press <span className="text-ide-text">⌘P</span> to
